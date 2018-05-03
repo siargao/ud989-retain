@@ -1,5 +1,5 @@
 $(function(){
-
+    localStorage.clear();
     var model = {
         init: function() {
             if (!localStorage.notes) {
@@ -20,13 +20,14 @@ $(function(){
     var octopus = {
         addNewNote: function(noteStr) {
             model.add({
-                content: noteStr
+                content: noteStr,
+                date: Date.now(),
             });
             view.render();
         },
 
         getNotes: function() {
-            return model.getAllNotes();
+            return model.getAllNotes().reverse();
         },
 
         init: function() {
@@ -52,7 +53,7 @@ $(function(){
             var htmlStr = '';
             octopus.getNotes().forEach(function(note){
                 htmlStr += '<li class="note">'+
-                        note.content +
+                        note.content + " " + new Date(note.date).toString()
                     '</li>';
             });
             this.noteList.html( htmlStr );
